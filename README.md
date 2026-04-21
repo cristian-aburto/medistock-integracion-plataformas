@@ -54,8 +54,8 @@ La presentación del proyecto se encuentra en la carpeta `/docs`.
 ---
 
 ## 👥 Integrantes
-- (pon aquí tu nombre)
-- (tus compañeros)
+- Cristian Aburto
+- Carlos Lienan
 
 ---
 
