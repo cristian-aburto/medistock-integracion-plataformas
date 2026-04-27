@@ -1,63 +1,71 @@
-# medistock-integracion-plataformas
-# 🏥 Proyecto MEDISTOCK - Integración de Plataformas
+# 🏥 Proyecto MEDISTOCK - API RESTful
 
 ## 📌 Descripción
-Este proyecto tiene como objetivo diseñar una solución de integración para la empresa MEDISTOCK, permitiendo automatizar sus procesos de ventas, inventario, pagos y logística mediante el uso de servicios web.
+Este proyecto propone el diseño de una API RESTful para la empresa MEDISTOCK, con el objetivo de automatizar los procesos de ventas, inventario, pedidos, pagos y logística.
 
-La propuesta busca transformar un modelo manual basado en correos y llamadas, hacia una plataforma digital integrada, eficiente y escalable.
-
----
-
-## 🎯 Objetivos
-- Automatizar la gestión de pedidos
-- Permitir consulta de stock en tiempo real
-- Integrar servicios externos (pagos y logística)
-- Mejorar la trazabilidad de pedidos
-- Reducir errores operativos
+La solución permite reemplazar procesos manuales por una arquitectura integrada, mejorando la eficiencia operativa y el acceso a información en tiempo real.
 
 ---
 
-## 🧩 Componentes del proyecto
-- Modelo de negocio (B2B y B2C)
-- Evaluación de alcances (negocio, datos, aplicación)
-- Definición de Web Services (API REST)
-- Arquitectura de microservicios
-- Diagramas BPMN (AS IS y TO BE)
+## 🛠️ Stack Tecnológico
+* **Lenguaje:** (por definir)
+* **Framework:** (por definir)
+* **Base de Datos:** MySQL / Oracle
+* **Herramientas:** GitHub, Trello, Draw.io
 
 ---
 
-## 🔄 Procesos modelados
-- **AS IS:** Proceso actual manual (correos, validaciones humanas)
-- **TO BE:** Proceso automatizado con integración de servicios web
+## 📂 Estructura del Repositorio
+* `/docs/` → Documentación del proyecto (informes y presentación)
+* `/diagramas/` → Diagramas BPMN, despliegue y arquitectura
+* `/bd/` → Scripts de base de datos
+* `/src/` → Código fuente (futuro desarrollo API)
 
 ---
 
-## 🛠️ Tecnologías propuestas
-- API REST
-- Base de datos relacional (Oracle / MySQL)
-- Integración con pasarelas de pago
-- Integración con servicios logísticos
+## ⚙️ Configuración e Instalación
+1. Clonar el repositorio
+2. Configurar la base de datos
+3. Ejecutar el backend (en desarrollo)
 
 ---
 
-## 📂 Estructura del repositorio
-- `/docs` → Documentación del proyecto (informes y presentación)
-- `/diagramas` → Diagramas BPMN, DER y arquitectura
-- `/bd` → Scripts de base de datos
-- `/src` → Código fuente (opcional)
+## 🧩 Documentación de Arquitectura (Modelo 4+1)
+Los diagramas del sistema se encuentran en la carpeta:
+
+- `/diagramas` → Incluye:
+  - BPMN AS IS
+  - BPMN TO BE
+  - Diagrama de Despliegue
+  - Diagrama de Paquetes
 
 ---
 
-## 📊 Presentación
-La presentación del proyecto se encuentra en la carpeta `/docs`.
+## 🔌 Arquitectura de la Solución
+El sistema se basa en una arquitectura de microservicios mediante una API REST, donde:
+
+- El cliente accede mediante una aplicación web (frontend)
+- El frontend consume la API REST (backend)
+- El backend gestiona la lógica de negocio
+- Se conecta a una base de datos
+- Se integra con APIs externas (pagos y logística)
+
+---
+
+## 🧪 Pruebas de API
+Actualmente el proyecto se encuentra en fase de diseño, por lo que las pruebas de endpoints aún no han sido implementadas.
+
+---
+
+## 📊 Gestión del Proyecto
+Se utilizó Trello para la organización de tareas, permitiendo gestionar el avance mediante estados como backlog, en progreso, revisión y finalizado.
 
 ---
 
 ## 👥 Integrantes
 - Cristian Aburto
 - Carlos Lienan
-
 ---
 
 ## 📚 Conclusión
-La solución propuesta permite a MEDISTOCK evolucionar hacia un sistema moderno, automatizado e ինտegrado, mejorando la eficiencia operativa y la experiencia del cliente mediante el uso de tecnologías actuales y servicios web.
+La propuesta permite a MEDISTOCK evolucionar hacia un sistema moderno, automatizado e integrado, mejorando la eficiencia operativa y reduciendo errores mediante el uso de tecnologías actuales.
