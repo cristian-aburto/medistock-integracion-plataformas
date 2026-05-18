@@ -1,0 +1,17 @@
+# Java compilados
+target/
+
+# Variables de entorno
+.env
+*.env
+
+# VSCode
+.vscode/
+
+# Node
+node_modules/
+dist/
+
+# Sistema
+.DS_Store
+Thumbs.db
