@@ -34,7 +34,7 @@ const api = {
   post: (p, b) => api.req("POST", p, b),
 };
 
-// ─── FORMATO CLP ─────────────────────────────────────────────────────────────
+// ─── FORMATO CLP/USD ─────────────────────────────────────────────────────────────
 const clp = (value) =>
   new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -42,6 +42,16 @@ const clp = (value) =>
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(Math.round(Number(value)));
+
+const usd = (clpValue) => {
+  const rate = 0.0011;
+  const converted = clpValue * rate;
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(converted);
+};
 
 // ─── CART REDUCER ─────────────────────────────────────────────────────────────
 const cartReducer = (state, action) => {
@@ -478,7 +488,12 @@ function CatalogPage({ cart, dispatch, toast }) {
                   {p.manufacturer && <div className="product-maker">{p.manufacturer}</div>}
                   <div className="product-footer">
                     <div>
-                      <div className="product-price">{clp(p.price)}</div>
+                      <div className="product-price">
+                        {clp(p.price)}
+                        <span style={{ fontSize: "0.75rem", color: "#888", marginLeft: "6px" }}>
+                          {usd(p.price)}
+                        </span>
+                      </div>
                       <div className={`product-stock ${p.stockQuantity < 10 ? "low" : ""}`}>
                         {p.stockQuantity < 10 ? `¡Solo ${p.stockQuantity} disponibles!` : `Stock: ${p.stockQuantity}`}
                       </div>
@@ -570,7 +585,12 @@ function CartDrawer({ cart, dispatch, onClose, onCheckout, user, onGoToAuth }) {
           <div className="drawer-footer">
             <div className="total-row">
               <span className="total-label">Total</span>
-              <span className="total-amount">{clp(total)}</span>
+                  <span className="total-amount">
+                    {clp(total)}
+                    <span style={{ fontSize: "0.8rem", color: "#888", marginLeft: "8px" }}>
+                      {usd(total)}
+                    </span>
+                  </span>
             </div>
             {!user && (
               <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 10, textAlign: "center" }}>
@@ -679,6 +699,7 @@ export default function StoreApp() {
   const [paymentStatus, setPayStatus] = useState(null);
   const [cart, dispatch]              = useReducer(cartReducer, []);
   const toast                         = useToast();
+  const [usdRate, setUsdRate] = useState(0.0011);
 
   // Detectar retorno de MercadoPago por URL
   useEffect(() => {
@@ -691,6 +712,13 @@ export default function StoreApp() {
       window.history.replaceState({}, "", "/");
     }
   }, []);
+
+  useEffect(() => {
+  fetch("http://localhost:8081/api/exchange/convert?from=CLP&to=USD&amount=1")
+    .then(r => r.json())
+    .then(data => { if (data.success) setUsdRate(data.data.rate); })
+    .catch(() => {});
+}, []);
 
   const cartCount  = cart.reduce((s, i) => s + i.qty, 0);
 
