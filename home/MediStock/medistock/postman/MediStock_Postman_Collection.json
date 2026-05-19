@@ -1,0 +1,318 @@
+{
+  "info": {
+    "name": "MediStock API",
+    "description": "Colección completa de endpoints para la API REST de MediStock — Integración de Plataformas ASY5131",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8081/api", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Ping",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/ping", "host": ["{{base_url}}"], "path": ["auth", "ping"] }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) { pm.collectionVariables.set('token', json.token); }",
+                  "else if (json.data && json.data.token) { pm.collectionVariables.set('token', json.data.token); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Farmacéutico",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"farmaceutico\",\n  \"password\": \"farm123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Registro de Usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"nuevo_usuario\",\n  \"email\": \"nuevo@medistock.cl\",\n  \"password\": \"pass123\",\n  \"fullName\": \"Nuevo Usuario\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Productos (Admin)",
+      "item": [
+        {
+          "name": "Listar Productos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/products?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/1", "host": ["{{base_url}}"], "path": ["products", "1"] }
+          }
+        },
+        {
+          "name": "Obtener Producto por SKU",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/sku/MED-001", "host": ["{{base_url}}"], "path": ["products", "sku", "MED-001"] }
+          }
+        },
+        {
+          "name": "Buscar Productos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/products/search?q=paracetamol",
+              "host": ["{{base_url}}"],
+              "path": ["products", "search"],
+              "query": [{ "key": "q", "value": "paracetamol" }]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por Categoría",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/category/MEDICAMENTO", "host": ["{{base_url}}"], "path": ["products", "category", "MEDICAMENTO"] }
+          }
+        },
+        {
+          "name": "Crear Producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aspirina 500mg x 20 comp.\",\n  \"sku\": \"MED-099\",\n  \"category\": \"MEDICAMENTO\",\n  \"price\": 1990,\n  \"stockQuantity\": 100,\n  \"minimumStock\": 20,\n  \"manufacturer\": \"Bayer\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/products", "host": ["{{base_url}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Editar Producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aspirina 500mg x 20 comp.\",\n  \"sku\": \"MED-099\",\n  \"category\": \"MEDICAMENTO\",\n  \"price\": 2190,\n  \"stockQuantity\": 80,\n  \"minimumStock\": 20,\n  \"manufacturer\": \"Bayer\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/products/1", "host": ["{{base_url}}"], "path": ["products", "1"] }
+          }
+        },
+        {
+          "name": "Actualizar Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 50,\n  \"operation\": \"ADD\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/products/1/stock", "host": ["{{base_url}}"], "path": ["products", "1", "stock"] }
+          }
+        },
+        {
+          "name": "Eliminar Producto",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/1", "host": ["{{base_url}}"], "path": ["products", "1"] }
+          }
+        },
+        {
+          "name": "Alertas — Stock Bajo",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/alerts/low-stock", "host": ["{{base_url}}"], "path": ["products", "alerts", "low-stock"] }
+          }
+        },
+        {
+          "name": "Alertas — Por Vencer",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/alerts/expiring", "host": ["{{base_url}}"], "path": ["products", "alerts", "expiring"] }
+          }
+        },
+        {
+          "name": "Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/products/dashboard/stats", "host": ["{{base_url}}"], "path": ["products", "dashboard", "stats"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Tienda (Clientes)",
+      "item": [
+        {
+          "name": "Catálogo de Productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/store/products?page=0&size=12",
+              "host": ["{{base_url}}"],
+              "path": ["store", "products"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "12" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detalle Producto Tienda",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/store/products/1", "host": ["{{base_url}}"], "path": ["store", "products", "1"] }
+          }
+        },
+        {
+          "name": "Buscar en Tienda",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/store/products/search?q=ibuprofeno",
+              "host": ["{{base_url}}"],
+              "path": ["store", "products", "search"],
+              "query": [{ "key": "q", "value": "ibuprofeno" }]
+            }
+          }
+        },
+        {
+          "name": "Productos por Categoría (Tienda)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/store/products/category/CONSUMIBLE", "host": ["{{base_url}}"], "path": ["store", "products", "category", "CONSUMIBLE"] }
+          }
+        },
+        {
+          "name": "Crear Orden",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"productId\": 1, \"quantity\": 2 },\n    { \"productId\": 3, \"quantity\": 1 }\n  ]\n}"
+            },
+            "url": { "raw": "{{base_url}}/store/orders", "host": ["{{base_url}}"], "path": ["store", "orders"] }
+          }
+        },
+        {
+          "name": "Mis Órdenes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/store/orders", "host": ["{{base_url}}"], "path": ["store", "orders"] }
+          }
+        },
+        {
+          "name": "Detalle de Orden",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/store/orders/1", "host": ["{{base_url}}"], "path": ["store", "orders", "1"] }
+          }
+        },
+        {
+          "name": "Crear Preferencia de Pago (MercadoPago)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": 1\n}"
+            },
+            "url": { "raw": "{{base_url}}/store/payments/create-preference", "host": ["{{base_url}}"], "path": ["store", "payments", "create-preference"] }
+          }
+        },
+        {
+          "name": "Estado del Pago",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/store/payments/status?orderId=1",
+              "host": ["{{base_url}}"],
+              "path": ["store", "payments", "status"],
+              "query": [{ "key": "orderId", "value": "1" }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
